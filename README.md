@@ -5,7 +5,7 @@ My second onboard React project.
 
 ## Environment and tools
 
-VScode / Node.js / React
+VScode / Node.js (16.16.0) / React (18.2.0)
 
 ```bash
 git clone https://github.com/indigotech/onboard-marcus-vinicius-react.git
