@@ -24,7 +24,7 @@ or
 npm i
 ```
 
-Àfter that, just run the project:
+After that, just run the project:
 
 ```bash
 npm run start
