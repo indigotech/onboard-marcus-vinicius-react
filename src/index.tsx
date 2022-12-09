@@ -8,8 +8,6 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-
-
 const root = ReactDOM.createRoot(
   document.querySelector('.root') as HTMLElement
 );
