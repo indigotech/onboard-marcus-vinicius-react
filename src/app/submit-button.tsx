@@ -1,31 +1,62 @@
-export const SubmitButton = () => {
+import { gql, useMutation } from '@apollo/client';
+import React from 'react';
 
+interface ISubmitButtonProps {
+    inputsData: {
+        email: string;
+        password: string;
+    }
+    inputError: {
+        email: boolean;
+        password: boolean;
+    }
+    onClick: () => void;
+    validate: boolean;
+
+}
+
+const loginMutation = gql`
+    mutation Login($data: LoginInput!) {
+        login(data: $data) {
+            token
+        }
+    }
+`;
+
+export const SubmitButton: React.FC<ISubmitButtonProps> = (props) => {
+    const [mutateFunction, { data, loading, error }] = useMutation(loginMutation, {
+        variables: {
+            data: {
+                email: props.inputsData.email,
+                password: props.inputsData.password
+            }
+        }
+    }
+    );
+
+    const handleClick = () => {
+        if (!props.validate) {
+            props.onClick();
+        }
+        else {
+            if (!(props.inputError.email && props.inputError.password)) {
+                mutateFunction()
+                    .then(({ data }) => {
+                        window.localStorage.setItem("user-session-token", data.login.token);
+                    })
+                    .catch(err => {
+                        err;
+                    });
+            };
+        };
+    };
 
     return (
         <>
-            <button type="button" onClick={inputValidator}>Entrar</button>
+            <button type="button" onClick={handleClick}>
+                Entrar
+            </button>
+            {error && <p>{error.message}</p>}
         </>
     );
-
 };
-
-const inputValidator = () => {
-    const emailValidator = () => {
-        const email = document.querySelector("#email-input") as HTMLInputElement;
-        return email.value.match(/^\S+@\S+\.\S+$/);
-    };
-    const passwordValidator = () => {
-        const password = document.querySelector("#password-input") as HTMLInputElement;
-        // This regex finds matches if the input.value has a length < 7 and doesn't contain at least
-        // a digit and one letter.
-        return password.value.match(/^(.{0,6}|[^0-9]*|[^a-z])$/);
-    };
-
-    if(!emailValidator()){
-        alert('Por favor insira um e-mail válido.');
-    };
-    if(passwordValidator()){
-        alert('Por favor insira uma senha válida.');
-    };
-};
-
