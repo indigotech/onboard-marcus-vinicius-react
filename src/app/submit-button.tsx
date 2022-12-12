@@ -10,8 +10,6 @@ interface ISubmitButtonProps {
         email: boolean;
         password: boolean;
     }
-    onClick: () => void;
-    validate: boolean;
 
 }
 
@@ -35,19 +33,14 @@ export const SubmitButton: React.FC<ISubmitButtonProps> = (props) => {
     );
 
     const handleClick = () => {
-        if (!props.validate) {
-            props.onClick();
-        }
-        else {
-            if (!(props.inputError.email && props.inputError.password)) {
-                mutateFunction()
-                    .then(({ data }) => {
-                        window.localStorage.setItem("user-session-token", data.login.token);
-                    })
-                    .catch(err => {
-                        err;
-                    });
-            };
+        if (!(props.inputError.email && props.inputError.password)) {
+            mutateFunction()
+                .then(({ data }) => {
+                    window.localStorage.setItem("user-session-token", data.login.token);
+                })
+                .catch(err => {
+                    console.error(err);
+                });
         };
     };
 
@@ -56,6 +49,7 @@ export const SubmitButton: React.FC<ISubmitButtonProps> = (props) => {
             <button type="button" onClick={handleClick}>
                 Entrar
             </button>
+            {loading && <p>Loading...</p>}
             {error && <p>{error.message}</p>}
         </>
     );
