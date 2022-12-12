@@ -1,14 +1,14 @@
 import React from "react";
 
-interface IEmailInpputProps {
-    setData: React.Dispatch<React.SetStateAction<string>>;
+interface IEmailInputProps {
+    setData: (email: string) => void;
     emailData: string;
     validate: boolean;
-    onError: React.Dispatch<React.SetStateAction<boolean>>;
+    onError: (validateInput: boolean) => void;
     error: boolean;
 }
 
-export const EmailInput = (props: IEmailInpputProps) => {
+export const EmailInput = (props: IEmailInputProps) => {
     const emailValidator = () => {
         return props.emailData.match(/^\S+@\S+\.\S+$/);
     };

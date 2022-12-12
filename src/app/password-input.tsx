@@ -1,14 +1,14 @@
 import React from "react";
 
 interface IPassowrdInputProps {
-    setData: React.Dispatch<React.SetStateAction<string>>;
+    setData: (password: string) => void;
     passwordData: string;
     validate: boolean;
-    onError: React.Dispatch<React.SetStateAction<boolean>>;
+    onError: (validateInput: boolean) => void;
     error: boolean;
 }
 
-export const PasswordInput = (props: IPassowrdInputProps) => {
+export const PasswordInput: React.FC<IPassowrdInputProps> = (props) => {
     const passwordValidator = () => {
         // This regex finds matches if the input.value has a length < 7 and doesn't contain at least
         // a digit and one letter.
@@ -17,8 +17,6 @@ export const PasswordInput = (props: IPassowrdInputProps) => {
     React.useEffect(() => {
         if (props.validate) {
             const validateInput = passwordValidator();
-            // console.log("passowrd value " + props.passwordData);
-            // console.log("pass val " + Boolean(validateInput));
             props.onError(Boolean(validateInput));
         };
     }, [props.validate, props.passwordData]);

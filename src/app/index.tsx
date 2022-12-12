@@ -5,8 +5,8 @@ import { PasswordInput } from "./password-input";
 import { SubmitButton } from "./submit-button";
 
 export const App = () => {
-    const [emailData, setEmailData] = useState('');
-    const [passwordData, setPasswordData] = useState('');
+    const [emailData, setEmailData] = useState("");
+    const [passwordData, setPasswordData] = useState("");
     const [validate, setValidate] = useState(false);
     const [inputErrorEmail, setInputErrorEmail] = useState(false);
     const [inputErrorPassword, setInputErrorPassword] = useState(false);
