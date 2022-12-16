@@ -22,6 +22,7 @@ export const App = () => {
             <PasswordInput setData={setPasswordData}
                 onError={setInputErrorPassword} passwordData={passwordData} 
                 error={inputErrorPassword} />
+                
             <SubmitButton inputsData={{
                 email: emailData,
                 password: passwordData

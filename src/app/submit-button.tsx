@@ -1,5 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
 import React from 'react';
+import { useLocalStorage } from '../hooks/use-local-storage';
 
 interface ISubmitButtonProps {
     inputsData: {
@@ -22,6 +23,8 @@ const loginMutation = gql`
 `;
 
 export const SubmitButton: React.FC<ISubmitButtonProps> = (props) => {
+    const storage = useLocalStorage()
+
     const [mutateFunction, { data, loading, error }] = useMutation(loginMutation, {
         variables: {
             data: {
@@ -32,15 +35,15 @@ export const SubmitButton: React.FC<ISubmitButtonProps> = (props) => {
     }
     );
 
+    React.useEffect(() => {
+        if (data) {
+            storage.setAuth(data.login.token);
+        };
+    }, [data])
+
     const handleClick = () => {
         if (!(props.inputError.email && props.inputError.password)) {
-            mutateFunction()
-                .then(({ data }) => {
-                    window.localStorage.setItem("user-session-token", data.login.token);
-                })
-                .catch(err => {
-                    console.error(err);
-                });
+            mutateFunction();
         };
     };
 
