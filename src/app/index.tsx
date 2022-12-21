@@ -1,15 +1,20 @@
-import { useState } from "react";
 import React from "react";
 import { EmailInput } from "./email-input";
 import { PasswordInput } from "./password-input";
 import { SubmitButton } from "./submit-button";
+import { useLocalStorage } from "../hooks/use-local-storage";
+import { Navigate } from "react-router-dom";
 
 export const App = () => {
-    const [emailData, setEmailData] = useState("");
-    const [passwordData, setPasswordData] = useState("");
-    const [inputErrorEmail, setInputErrorEmail] = useState(false);
-    const [inputErrorPassword, setInputErrorPassword] = useState(false);
+    const { auth } = useLocalStorage();
+    const [emailData, setEmailData] = React.useState("");
+    const [passwordData, setPasswordData] = React.useState("");
+    const [inputErrorEmail, setInputErrorEmail] = React.useState(false);
+    const [inputErrorPassword, setInputErrorPassword] = React.useState(false);
 
+    if (auth) {
+        return <Navigate to="/home" replace />;
+    }
 
     return (
         <>

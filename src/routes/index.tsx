@@ -1,20 +1,25 @@
 import React from "react";
-import { BrowserRouter, Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { App } from "../app";
 import { useLocalStorage } from "../hooks/use-local-storage";
 
-export const Router = () => {
-    const { auth: token } = useLocalStorage();
-    console.log(token);
+export const Router = () => (
+    <Routes>
+        <Route path="/login" element={<App />} />
+        <Route path="/home" element={<AuthGuard><Home /></AuthGuard>} />
+        <Route path="*" element={<AuthGuard><Navigate to={"/home"} replace /></AuthGuard>} />
+    </Routes>
+);
 
-    return (
-        <Routes>
-            <Route path="*" element={<Navigate to={token ? "/home" : "/login"} />} />
-            <Route path="/login" element={token ?<Navigate to="/home" replace/> : <App />} />
-            <Route path="/home" element={token ? <Home /> : <Navigate to="/login" />} />
-        </Routes>
-    );
-};
+const AuthGuard: React.FC<React.PropsWithChildren> = (props) => {
+    const { auth } = useLocalStorage();
+
+    if (!auth) {
+        return <Navigate to={"/login"} replace />
+    }
+    
+    return <>{props.children}</>;
+}
 
 const Home = () => {
     return (

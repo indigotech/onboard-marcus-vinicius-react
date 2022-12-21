@@ -1,6 +1,8 @@
-import { gql, useMutation } from '@apollo/client';
 import React from 'react';
+import { gql, useMutation } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '../hooks/use-local-storage';
+import { LoadingIcon } from './loading-icon';
 
 interface ISubmitButtonProps {
     inputsData: {
@@ -23,36 +25,40 @@ const loginMutation = gql`
 `;
 
 export const SubmitButton: React.FC<ISubmitButtonProps> = (props) => {
-    const storage = useLocalStorage()
+    const { setAuth } = useLocalStorage();
+    const navigate = useNavigate();
 
-    const [mutateFunction, { data, loading, error }] = useMutation(loginMutation, {
-        variables: {
-            data: {
-                email: props.inputsData.email,
-                password: props.inputsData.password
-            }
+    const [mutateFunction, { loading, error }] = useMutation<{ login: { token: string } }>(loginMutation, {
+        onCompleted: (data) => {
+            setAuth(data.login.token);
+            navigate('/home', { replace: true })
         }
-    }
-    );
-
-    React.useEffect(() => {
-        if (data) {
-            storage.setAuth(data.login.token);
-        };
-    }, [data])
+    });
 
     const handleClick = () => {
         if (!(props.inputError.email && props.inputError.password)) {
-            mutateFunction();
+            mutateFunction({
+                variables: {
+                    data: {
+                        email: props.inputsData.email,
+                        password: props.inputsData.password
+                    }
+                }
+            });
         };
     };
+
+    if (loading) {
+        return <button type="button" disabled={true}>
+            <LoadingIcon />
+        </button>
+    }
 
     return (
         <>
             <button type="button" onClick={handleClick}>
                 Entrar
             </button>
-            {loading && <p>Loading...</p>}
             {error && <p>{error.message}</p>}
         </>
     );
