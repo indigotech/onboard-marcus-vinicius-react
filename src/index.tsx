@@ -1,11 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Router } from "./routes";
-import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import { BrowserRouter } from "react-router-dom";
 
+const httpLink = new HttpLink({ uri: "https://template-onboarding-node-sjz6wnaoia-uc.a.run.app/graphql" })
+
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem("user-session-token");
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? ` ${token}` : ""
+    }
+  }
+});
+
 const client = new ApolloClient({
-  uri: "https://template-onboarding-node-sjz6wnaoia-uc.a.run.app/graphql",
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache()
 });
 
