@@ -20,20 +20,25 @@ export const App = () => {
         <>
             <h1>Bem-vindo(a) à Taqtile!</h1>
 
-            <EmailInput setData={setEmailData}
+            <EmailInput
+                setData={setEmailData}
                 onError={setInputErrorEmail}
-                emailData={emailData} error={inputErrorEmail} />
+                error={inputErrorEmail}
+            />
 
-            <PasswordInput setData={setPasswordData}
-                onError={setInputErrorPassword} passwordData={passwordData} 
-                error={inputErrorPassword} />
-                
+            <PasswordInput
+                setData={setPasswordData}
+                onError={setInputErrorPassword}
+                error={inputErrorPassword}
+            />
+
             <SubmitButton inputsData={{
                 email: emailData,
                 password: passwordData
             }} inputError={{
-                email: inputErrorEmail, password: inputErrorPassword
-            }}/>
+                email: inputErrorEmail, 
+                password: inputErrorPassword
+            }} />
         </>
     );
 };

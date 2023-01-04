@@ -2,7 +2,6 @@ import React from "react";
 
 interface IEmailInputProps {
     setData: (email: string) => void;
-    emailData: string;
     onError: (validateInput: boolean) => void;
     error: boolean;
 }
@@ -35,9 +34,14 @@ export const EmailInput = (props: IEmailInputProps) => {
 
     return (
         <div>
-            <label htmlFor="email-input">E-mail</label>
-            <input type="email" id="email-input" onChange={handleChange} onBlur={handleBlur} />
-            {emailValidate && props.error && (<p>O email é inválido!!</p>)}
+            <label>E-mail
+                <input
+                    type="text"
+                    id="email-input"
+                    onChange={handleChange}
+                    onBlur={handleBlur} />
+                {emailValidate && props.error && (<p>O email é inválido</p>)}
+            </label>
         </div>
     );
 };

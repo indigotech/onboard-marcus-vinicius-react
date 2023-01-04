@@ -1,9 +1,7 @@
-import { isConstValueNode } from "graphql";
 import React from "react";
 
 interface IPassowrdInputProps {
     setData: (password: string) => void;
-    passwordData: string;
     onError: (validateInput: boolean) => void;
     error: boolean;
 }
@@ -37,13 +35,16 @@ export const PasswordInput: React.FC<IPassowrdInputProps> = (props) => {
         props.setData(password);
     };
 
-
-
     return (
         <div>
-            <label htmlFor="password-input">Senha</label>
-            <input type="password" id="password-input" onChange={handleChange} onBlur={handleBlur} />
-            {passwordValidate && props.error && (<p>A senha é inválida!!</p>)}
+            <label>Senha
+                <input
+                    type="password"
+                    id="password-input"
+                    onChange={handleChange}
+                    onBlur={handleBlur} />
+                {passwordValidate && props.error && (<p>A senha é inválida</p>)}
+            </label>
         </div>
     );
 };

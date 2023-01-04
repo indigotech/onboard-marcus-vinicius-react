@@ -3,6 +3,12 @@ import { gql, useQuery } from "@apollo/client";
 import { LoadingIcon } from "./loading-icon";
 import { UserCard } from "./user-card";
 
+interface IUserData {
+    name: string;
+    id: string;
+    email: string;
+};
+
 const GET_USERS_MUTATTION = gql`
     query{
         users{
@@ -22,12 +28,17 @@ export const UserList = () => {
         return <LoadingIcon />;
     };
     if (error) {
-        console.log(error); 
+        console.log(error);
         return <p>Erro! Por favor atualize a página ou tente mais tarde.</p>;
     };
-    const list = data.users.nodes.map((element: any) => {
+    
+    const list = data.users.nodes.map((element: IUserData) => {
         return (
-            <UserCard userName={element.name} userEmail={element.email} key={element.id} />
+            <UserCard
+                userName={element.name}
+                userEmail={element.email}
+                key={element.id}
+            />
         );
     });
 
