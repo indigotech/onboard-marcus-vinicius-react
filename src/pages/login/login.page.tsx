@@ -1,11 +1,11 @@
 import React from "react";
-import { EmailInput } from "./email-input";
-import { PasswordInput } from "./password-input";
+import { EmailInput } from "../../components/email-input";
+import { PasswordInput } from "../../components/password-input";
 import { SubmitButton } from "./submit-button";
-import { useLocalStorage } from "../hooks/use-local-storage";
+import { useLocalStorage } from "../../hooks/use-local-storage";
 import { Navigate } from "react-router-dom";
 
-export const App = () => {
+export const LoginPage = () => {
     const { auth } = useLocalStorage();
     const [emailData, setEmailData] = React.useState("");
     const [passwordData, setPasswordData] = React.useState("");

@@ -1,11 +1,7 @@
 import { gql } from "@apollo/client";
 import React from "react";
-import { BirthDateInput } from "./birth-date-input";
-import { CellPhoneInput } from "./cellphone-input";
-import { ConfirmPasswordInput } from "./confirm-password-input";
-import { EmailInput } from "./email-input";
-import { PasswordInput } from "./password-input";
-import { SelectRoleInput } from "./select-role-input";
+import { EmailInput, BirthDateInput, CellPhoneInput, PasswordInput, ConfirmPasswordInput, SelectRoleInput } from "../../components";
+
 
 
 const CREATE_USER_MUTATION = gql`
