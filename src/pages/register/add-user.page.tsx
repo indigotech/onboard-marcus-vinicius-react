@@ -106,7 +106,6 @@ export const AddUserForm = () => {
             alert("no!"); //Vou mudar isso ainda, juro
             return;
         };
-        console.log(userData)
         mutateFunction({
             variables: {
                 createUserData: userData
