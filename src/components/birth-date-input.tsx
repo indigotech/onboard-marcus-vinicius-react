@@ -7,35 +7,46 @@ interface IBirthDateInputProps {
 };
 
 export const BirthDateInput: React.FC<IBirthDateInputProps> = (props) => {
-    const [day, setDay] = React.useState(1);
-    const [month, setMonth] = React.useState(1);
-    const [year, setYear] = React.useState(1111);
-    const [maxDay, setMaxDay] = React.useState(31);
+    const [day, setDay] = React.useState("");
+    const [month, setMonth] = React.useState("");
+    const [year, setYear] = React.useState("");
 
-    const [dayValidateError, setDayValidateError] = React.useState(false);
-    const [monthValidateError, setMonthValidateError] = React.useState(false);
-    const [yearValidateError, setYearValidateError] = React.useState(false);
 
     React.useEffect(() => {
-        if (dayValidateError || monthValidateError || yearValidateError) {
-            props.onError(true);
-        }
-        else {
-            props.onError(false);
+        if(!year || !month || !day ) {
+          return;  
         };
-    }, [dayValidateError, monthValidateError, yearValidateError])
 
+        const inputDate = `${year}-${month}-${day}`;
+        const today = new Date().getTime();
+        const birthDate = new Date(inputDate).getTime();
 
-
-    const today = new Date();
-
-    const birthDateValidation = () => {
-        if (today.getFullYear() - year < 18) {
+        if(
+            //See if the birth date is valid
+            isNaN(birthDate) || 
+            // See if the birth date was more than 18 years ago
+            today - birthDate < 568025136000
+            ) {
             props.onError(true);
-        }
-        else {
-            props.onError(false);
+            return;
         };
+        props.onError(false);
+        props.setData(inputDate);
+    }, [year, month, day]);
+    
+    const dayInputHandleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+        const inputValue = event.target.value;
+        setDay(inputValue);
+    };
+
+    const monthInputHandleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+        const inputValue = event.target.value;
+        setMonth(inputValue);
+    };
+
+    const yearInputHandleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+        const inputValue = event.target.value;
+        setYear(inputValue);
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,90 +54,8 @@ export const BirthDateInput: React.FC<IBirthDateInputProps> = (props) => {
         input.value = input.value.replace(/[^0-9]/g, "");
     };
 
-    const birthDayValidation = (event: React.FocusEvent<HTMLInputElement>) => {
-        const isLeapYear = () => {
-            return ((year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0));
-        };
-
-        switch (month) {
-            case 4:
-            case 6:
-            case 9:
-            case 11:
-                setMaxDay(30);
-                break;
-            case 2:
-                setMaxDay(
-                    isLeapYear() ? 29 : 28
-                );
-                break;
-        };
-
-        const day = +(event.target.value);
-        if (day > maxDay) {
-            event.target.value = `${maxDay}`;
-        };
-        if (day < 1) {
-            event.target.value = "01";
-        };
-
-        setDay(day);
-    };
-
-    const dayInputHandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const input = event.target;
-        input.value = input.value.replace(/[^0-9]/g, "");
-
-        const day = +(input.value);
-        if (day > maxDay || day < 1) {
-            setDayValidateError(true);
-        }
-        else {
-            
-        }
-
-
-
-    };
-
-    const monthInputHandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const input = event.target;
-        input.value = input.value.replace(/[^0-9]/g, "");
-
-        const month = +(input.value);
-        if (month > 12 || month < 1) {
-            setMonthValidateError(true);
-        }
-        else {
-            setMonthValidateError(false);
-        };
-
-        if (!monthValidateError) {
-            setMonth(month);
-        };
-    };
-
-
-    const yearInputHandleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const input = event.target;
-        input.value = input.value.replace(/[^0-9]/g, "");
-
-        const year = +(input.value);
-        if (year < 1900 || year > today.getFullYear()) {
-            setYearValidateError(true);
-        }
-        else {
-            setYearValidateError(false)
-        };
-
-        if (!yearValidateError) {
-            setYear(year);
-        };
-    };
-
-
     return (
-        <div onBlur={birthDateValidation}>
+        <div>
             <label>
                 Data de nascimento:
                 <label>
@@ -135,7 +64,7 @@ export const BirthDateInput: React.FC<IBirthDateInputProps> = (props) => {
                         type="text"
                         maxLength={2}
                         onChange={handleChange}
-                        onBlur={birthDayValidation}
+                        onBlur={dayInputHandleBlur}
                         size={1}
                         placeholder="dd"
                     />
@@ -145,7 +74,8 @@ export const BirthDateInput: React.FC<IBirthDateInputProps> = (props) => {
                     <input
                         type="text"
                         maxLength={2}
-                        onChange={monthInputHandleChange}
+                        onChange={handleChange}
+                        onBlur={monthInputHandleBlur}
                         size={1}
                         placeholder="mm"
                     />
@@ -155,7 +85,8 @@ export const BirthDateInput: React.FC<IBirthDateInputProps> = (props) => {
                     <input
                         type="text"
                         maxLength={4}
-                        onChange={yearInputHandleChange}
+                        onChange={handleChange}
+                        onBlur={yearInputHandleBlur}
                         size={2}
                         placeholder="aaaa"
                     />

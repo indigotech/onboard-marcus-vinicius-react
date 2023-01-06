@@ -1,9 +1,9 @@
 import React from "react";
-import { EmailInput } from "../../components/email-input";
-import { PasswordInput } from "../../components/password-input";
-import { SubmitButton } from "./submit-button";
 import { useLocalStorage } from "../../hooks/use-local-storage";
 import { Navigate } from "react-router-dom";
+import { TextInput } from "../../components/text-input";
+import { SubmitButton } from "./submit-button";
+
 
 export const LoginPage = () => {
     const { auth } = useLocalStorage();
@@ -16,20 +16,38 @@ export const LoginPage = () => {
         return <Navigate to="/home" replace />;
     }
 
+    const emailValidator = (email: string) => {
+        return Boolean(email.match(/^\S+@\S+\.\S+$/));
+    };
+
+    const passwordValidator = (password: string) => {
+        // This regex finds matches if the input.value has a length < 7 and doesn't contain at least
+        // a digit and one letter.
+        const regex = /^(.{0,6}|[^0-9]*|[^a-z|A-z]*)$/
+        return !regex.test(password);
+    };
+
     return (
         <>
             <h1>Bem-vindo(a) à Taqtile!</h1>
 
-            <EmailInput
-                setData={setEmailData}
+            <TextInput
+                onValueChange={setEmailData}
                 onError={setInputErrorEmail}
                 error={inputErrorEmail}
+                label="Email"
+                validateFunc={emailValidator}
+                errorMessage="O email é inválido"
             />
 
-            <PasswordInput
-                setData={setPasswordData}
+            <TextInput
+                onValueChange={setPasswordData}
                 onError={setInputErrorPassword}
                 error={inputErrorPassword}
+                label="Senha"
+                validateFunc={passwordValidator}
+                errorMessage="A senha é inválida"
+                type="password"
             />
 
             <SubmitButton inputsData={{

@@ -2,7 +2,7 @@ import React from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '../../hooks/use-local-storage';
-import { LoadingIcon } from './loading-icon';
+import { LoadingIcon } from '../../components';
 
 interface ISubmitButtonProps {
     inputsData: {
