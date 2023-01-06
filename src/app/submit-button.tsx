@@ -16,7 +16,7 @@ interface ISubmitButtonProps {
 
 }
 
-const loginMutation = gql`
+const LOGIN_MUTATION = gql`
     mutation Login($data: LoginInput!) {
         login(data: $data) {
             token
@@ -28,7 +28,7 @@ export const SubmitButton: React.FC<ISubmitButtonProps> = (props) => {
     const { setAuth } = useLocalStorage();
     const navigate = useNavigate();
 
-    const [mutateFunction, { loading, error }] = useMutation<{ login: { token: string } }>(loginMutation, {
+    const [mutateFunction, { loading, error }] = useMutation<{ login: { token: string } }>(LOGIN_MUTATION, {
         onCompleted: (data) => {
             setAuth(data.login.token);
             navigate('/home', { replace: true })

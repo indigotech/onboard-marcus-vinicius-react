@@ -1,6 +1,7 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { App } from "../app";
+import { UserList } from "../app/users-list";
 import { useLocalStorage } from "../hooks/use-local-storage";
 
 export const Router = () => (
@@ -16,15 +17,13 @@ const AuthGuard: React.FC<React.PropsWithChildren> = (props) => {
 
     if (!auth) {
         return <Navigate to={"/login"} replace />
-    }
+    };
     
     return <>{props.children}</>;
-}
+};
 
 const Home = () => {
     return (
-        <h1>
-            ALOOOOO
-        </h1>
-    )
-}
+        <UserList />
+    );
+};
