@@ -1,8 +1,8 @@
 import React from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
-import { useLocalStorage } from '../hooks/use-local-storage';
-import { LoadingIcon } from './loading-icon';
+import { useLocalStorage } from '../../hooks/use-local-storage';
+import { LoadingIcon } from '../../components';
 
 interface ISubmitButtonProps {
     inputsData: {
@@ -13,8 +13,7 @@ interface ISubmitButtonProps {
         email: boolean;
         password: boolean;
     }
-
-}
+};
 
 const LOGIN_MUTATION = gql`
     mutation Login($data: LoginInput!) {
@@ -49,14 +48,19 @@ export const SubmitButton: React.FC<ISubmitButtonProps> = (props) => {
     };
 
     if (loading) {
-        return <button type="button" disabled={true}>
-            <LoadingIcon />
-        </button>
-    }
+        return (
+            <button
+                type="button"
+                disabled={true}>
+                <LoadingIcon />
+            </button>);
+    };
 
     return (
         <>
-            <button type="button" onClick={handleClick}>
+            <button
+                type="button"
+                onClick={handleClick}>
                 Entrar
             </button>
             {error && <p>{error.message}</p>}
