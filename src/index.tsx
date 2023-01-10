@@ -4,6 +4,7 @@ import { Router } from "./routes";
 import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { BrowserRouter } from "react-router-dom";
+import { GlobalStyles } from "./global-style.styled";
 
 const httpLink = new HttpLink({ uri: "https://template-onboarding-node-sjz6wnaoia-uc.a.run.app/graphql" })
 
@@ -29,6 +30,7 @@ root.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
       <BrowserRouter>
+        <GlobalStyles />
         <Router />
       </BrowserRouter>
     </ApolloProvider>

@@ -1,8 +1,9 @@
 import React from "react";
 import { gql, useQuery } from "@apollo/client";
-import { LoadingIcon } from "../../components";
+import { LoadingIcon, Modal } from "../../components";
 import { UserCard } from "./user-card";
 import { useNavigate } from "react-router-dom";
+import { UserInfoModal } from "./user-info-modal";
 
 interface IUserData {
     name: string;
@@ -23,6 +24,9 @@ const GET_USERS_MUTATTION = gql`
 `;
 
 export const UserList = () => {
+    const [showModal, setShowModal] = React.useState(false);
+    const [modalId, setModalId] = React.useState(0);
+
     const { loading, data, error } = useQuery(GET_USERS_MUTATTION);
     const navigate = useNavigate();
 
@@ -30,16 +34,24 @@ export const UserList = () => {
         return <LoadingIcon />;
     };
     if (error) {
-        console.log(error);
+        console.warn(error);
         return <p>Erro! Por favor atualize a página ou tente mais tarde.</p>;
     };
 
-    const list = data.users.nodes.map((element: IUserData) => {
+
+    const arr = data.users.nodes;
+   
+    const list = arr.map((element: IUserData) => {
         return (
             <UserCard
                 userName={element.name}
                 userEmail={element.email}
                 key={element.id}
+                onClick={() => {
+                    setShowModal(true);
+                    setModalId(arr.length - +element.id);
+
+                }}
             />
         );
     });
@@ -53,10 +65,15 @@ export const UserList = () => {
                </nav>
             </header>
             <main>
+                <Modal 
+                    showModal={showModal}
+                    closeModal={() => setShowModal(false)}
+                    cleanModalData={() => {}}
+                >
+                    <UserInfoModal id={modalId}/>
+                </Modal>
                 <h1>Lista de usuários</h1>
-                <ul>
                     {list}
-                </ul>
             </main>
         </>
     );
