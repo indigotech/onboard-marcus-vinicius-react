@@ -3,13 +3,14 @@ import React from "react";
 interface IUserCardProps {
     userName: string;
     userEmail: string;
+    onClick: () => void;
 };
 
 export const UserCard: React.FC<IUserCardProps> = (props) => {
     return (
-        <li>
-            <p>Usuàrio: {props.userName}</p>
+        <div onClick={props.onClick}>
+            <p>Usuário: {props.userName}</p>
             <p>Email: {props.userEmail} </p>
-        </li>
+        </div>
     );
 };
